@@ -6,6 +6,10 @@
 
 This repository is meant to give [SvelteKit](https://kit.svelte.dev/) developers an easy on-ramp to get started with developing decentralized applications (Dapps in short) for the Internet Computer blockchain.
 
+Svelte  version:  4.2.8   
+SvelteKit version: 1.30.3  
+@dfinity/agent: 0.20.2   
+
 ## What is this repository for?
 This repository is made for my personal use, but feel free to use it as a template for your own projects.
 
