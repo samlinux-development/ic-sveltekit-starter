@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { createActor } from '../../../declarations/backend';
 
-	let input = '',
-		disabled = false,
-		greeting = '';
+	let input = '', greeting = '';
 
 	const handleOnSubmit = async () => {
-		disabled = true;
 
 		try {
 			// Canister IDs are automatically expanded to .env config - see vite.config.ts
@@ -23,7 +20,6 @@
 		} catch (err: unknown) {
 			console.error(err);
 		}
-		disabled = false;
 	};
 </script>
 
@@ -33,17 +29,12 @@
 
 	<form on:submit|preventDefault={handleOnSubmit}>
 		<label for="name">Say hello to </label>
-		<input id="name" alt="Name" type="text" bind:value={input} {disabled} />
+		<input id="name" alt="Name" type="text" bind:value={input}/>
 		<button type="submit">Click Me!</button>
-
-		{#if disabled}
-			<p>Fetching data from the IC...</p>
-		{:else}
-			<section id="greeting">
-				{greeting}
-			</section>
-		{/if}
 	</form>
+	<div id="greeting">
+		{greeting}
+		</div>
 </main>
 
 <style>
@@ -73,12 +64,10 @@
 	}
 
 	#greeting {
+		width: 40vw;
+		min-height: 30px;
 		margin: 10px auto;
 		padding: 10px 60px;
 		border: 1px solid #222;
-	}
-
-	#greeting:empty {
-		display: none;
 	}
 </style>
