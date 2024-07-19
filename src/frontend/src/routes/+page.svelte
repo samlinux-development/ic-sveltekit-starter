@@ -1,22 +1,14 @@
 <script lang="ts">
-	import { createActor } from '../../../declarations/backend';
+	 import { ic } from '../stores/ic';
 
 	let input = '', greeting = '';
 
 	const handleOnSubmit = async () => {
 
 		try {
-			// Canister IDs are automatically expanded to .env config - see vite.config.ts
-			const canisterId = import.meta.env.VITE_BACKEND_CANISTER_ID;
-
-			// We pass the host instead of using a proxy to support NodeJS >= v17 (ViteJS issue: https://github.com/vitejs/vite/issues/4794)
-			const host = import.meta.env.VITE_HOST;
-
-			// Create an actor to interact with the IC for a particular canister ID
-			const actor = createActor(canisterId, { agentOptions: { host } });
-
 			// Call the IC
-			greeting = await actor.sayHelloTo(input);
+			greeting = await $ic.actor.sayHelloTo(input);
+
 		} catch (err: unknown) {
 			console.error(err);
 		}
@@ -25,7 +17,10 @@
 
 <main>
 	<img src="logo2.svg" alt="DFINITY logo" />
-	<br />
+	
+	<div id="info">
+		This example demonstrates how to interact with a canister using <span class="highlight">import.meta.env.VITE_*</span> variables.
+	</div>
 
 	<form on:submit|preventDefault={handleOnSubmit}>
 		<label for="name">Say hello to </label>
@@ -34,10 +29,15 @@
 	</form>
 	<div id="greeting">
 		{greeting}
-		</div>
+	</div>
+
+
 </main>
 
 <style>
+	main {
+		font-family: sans-serif;
+	}
 	img {
 		max-width: 50vw;
 		max-height: 25vw;
@@ -53,7 +53,6 @@
 		max-width: 40vw;
 		margin: auto;
 		align-items: baseline;
-		font-family: sans-serif;
 		font-size: 1.5rem;
 	}
 
@@ -70,4 +69,16 @@
 		padding: 10px 60px;
 		border: 1px solid #222;
 	}
+	#info {
+		width: 40vw;
+
+		margin: 10px auto;
+		padding: 10px 60px;
+	}
+
+.highlight {
+	background-color: rgb(245, 237, 86);
+	border-radius: 5px;
+	padding: 0 5px;
+}
 </style>

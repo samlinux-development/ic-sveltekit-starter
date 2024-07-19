@@ -1,122 +1,87 @@
 <p align="left" >
-  <img width="240"  src="./src/frontend/static/logo.png">
+  <img width="240"  src="./src/frontend/static/icAcademy.png">
 </p>
 
-# SvelteKit Dapp template
+# IC SvelteKit (import.meta.env) Starter
 
 This repository is meant to give [SvelteKit](https://kit.svelte.dev/) developers an easy on-ramp to get started with developing decentralized applications (Dapps in short) for the Internet Computer blockchain.
 
-Svelte  version:  4.2.8   
-SvelteKit version: 1.30.3  
-@dfinity/agent: 0.20.2   
+It is also an example for the usage of `import.meta.env` in SvelteKit in contrast to the usage of process.env in other examples.
+
+## How does it work?
+The `vite.config.ts` file contains a transformation process to generate the `import.meta.env.VITE_` environment variables from the `canisters_ids.json` file in the `.dfx` folder for the respective environment.
+
+This folder stores the canister IDs for backend and frontend canisters for different environments such as `local, playground and ic`.
+
+The respective `canisters_ids.json` file is used to set the `import.meta.env.VITE_` variables according to the environment so that the frontend canister can interact with the backend canister.
+
+In `src/frontend/src/stores/ic.ts` a custom actor is created to interact with the backend canister. The actor is used in `src/frontend/src/routes/+page.svelte` to call the backend canister. In this example a Svelte `writable store` is used to store the connection to the backend call. In this way it can be easily accessed in any Svelte component.
+
+From the `src/declarations` folder only the did files are used.
+
+## Versions
+Svelte  version:  4.2.18   
+SvelteKit version: 2.5.18  
+@dfinity/agent: 2.0.0   
 
 ## What is this repository for?
 This repository is made for my personal use, but feel free to use it as a template for your own projects.
 
-## What is the Internet Computer?
-
-The Internet Computer is a novel blockchain that has the unique capability to serve web content while not requiring the end users to use a browser extension, such as Metamask.
-
-Coupled with super fast execution the Internet Computer provides the worlds first truly user friendly Web 3.0 experience.
-
-## What are canisters?
-
-Dapps on the Internet Computer live in canisters, which are special smart contracts that run WebAssembly, and can respond to regular HTTP requests, among other capabilities.
-
-This repository uses Svelte for the frontend, and can upload it to an `asset` type canister that can host your frontend on the Internet Computer.
-
-## Security Considerations and Security Best Practices
-
-If you base your application on this example, we recommend you familiarize yourself with and adhere to the [Security Best Practices](https://internetcomputer.org/docs/current/references/security/) for developing on the Internet Computer. This example may not implement all the best practices.
-
-For example, the following aspects are particularly relevant for creating frontends:
-
-- [Use a well-audited authentication service and client side IC libraries](https://internetcomputer.org/docs/current/references/security/web-app-development-security-best-practices#use-a-well-audited-authentication-service-and-client-side-ic-libraries)
-- [Define security headers including a Content Security Policy (CSP)](https://internetcomputer.org/docs/current/references/security/web-app-development-security-best-practices#define-security-headers-including-a-content-security-policy-csp)
-- [Don’t load JavaScript (and other assets) from untrusted domains](https://internetcomputer.org/docs/current/references/security/web-app-development-security-best-practices#dont-load-javascript-and-other-assets-from-untrusted-domains)
-
 ## Getting started
 
-Make sure you have [node.js](https://nodejs.org/) installed.
+To clone and use the Github repository for your own purpose following the commands below. 
 
+**Note** to get a clean git repository. A tool called “digit” is used. Make sure you have it installed. If you haven't installed it yet, you can do so using the following command.
+
+```bash
+npm install -g degit
 ```
-git clone https://github.com/samlinux-development/ic-svelte-starter.git
-cd ic-svelte-starter.git
-npm install
+Summary of installation steps:
+1. Check needed tools
+2. Install and discuss the github repository
+3. Start a local Internet Computer replica
+4. Deploy frontend and backend canister to local replica
+5. Test the Motoko backend sayHelloTo function
+
+
+```bash
+mkdir myapp && cd myapp
 ```
-
-## DFX
-
-Install `dfx` by running
-
+```bash
+npx degit https://github.com/samlinux-development/ic-sveltekit-starter
 ```
-sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+```bash
+npm i
 ```
+Start your local replica (make sure you have DFX already installed!)
 
-### Start and stop the local replica
-
-Open a new terminal window _in the project directory_, and run the following command to start the local replica. The replica will not start unless `dfx.json` exists in the current directory.
-
-```
-dfx start --background
-```
-
-When you're done with development, or you're switching to a different dfx project, running
-
-```
-dfx stop
-```
-
-from the project directory will stop the local replica.
-
-## Build & run the dapp
-
-To build and deploy the project locally run
-
-```
-dfx deploy
+```bash
+dfx start --clean --background
 ```
 
-When the process completes you'll have a frontend canister running locally. To find the frontend canister's ID, run
-
-```
-dfx canister id frontend
-```
-
-It will output something similar to `rno2w-sqaaa-aaaaa-aaacq-cai`. Copy this ID and open it in the browser using `http://<canister ID>.localhost:4943`, eg. `http://rno2w-sqaaa-aaaaa-aaacq-cai.localhost:4943`.
-
-## Local development
-
-You can serve the frontend in development mode like you normally develop an app using the command
-
-```
-npm run dev
+Deploy it locally
+```bash
+dfx deploy 
 ```
 
-it is not necessary to deploy it to the frontend canister during development.
-
-## Deploying to the IC
-
-To host the Svelte app on the IC, you'll need to have some cycles available. Cycles pay for the execution of your app, and they are also needed to create canisters.
-
-You can get some cycles for free from the [Cycles Faucet](faucet.dfinity.org).
-
-You should have a canister running the cycles wallet on the IC at this point. The cycles wallet makes it easy to pay for canister creation.
-
-You can check the balance by running
-
-```
-dfx wallet --network ic balance
+Get you frontend canister id
+```bash
+echo http://$(dfx canister id frontend).localhost:4943
 ```
 
-After making sure you have cycles available you can run
+Open your browser and use the following URL scheme:
 
+- http://[canisterId].localhost:4943
+- e.g. http://be2us-64aaa-aaaaa-qaabq-cai.localhost:4943
+
+Check the sayHelloTo function with the CLI cammand below:
+```bash
+dfx canister call backend sayHelloTo '("Roland")'
 ```
-dfx deploy --network ic
+
+## Deploying to the playground
+To test your dApp under the Internet Computer's environment, you can deploy it to the Motoko Playground.
+
+```bash
+dfx deploy --playground
 ```
-
-The command will build the project, create a new canister on the IC and deploy the Svelte app into it. The command will also create a new file `canister_ids.json` which will help the dfx tool deploy to the same canister in future updates. You can commit this file in your repository.
-
-You can now open your Svelte app running on the IC. You can find the canister ID in the deploy command output, or use the ID in `canister_ids.json`.
-
-The link to your app is `<canister_id>.ic0.app`. For example if your canister ID is `zgvi5-hiaaa-aaaam-aaasq-cai`, your app will be at `https://zgvi5-hiaaa-aaaam-aaasq-cai.ic0.app/`.
