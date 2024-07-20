@@ -38,7 +38,7 @@ export function createActor(options?:OptionsType):ReturnType {
     options.agentOptions.host = hostOptions.host;
   }
 
-  const agent = new HttpAgent({ ...options.agentOptions });
+  const agent = HttpAgent.createSync({ ...options.agentOptions });
   
   // Fetch root key for certificate validation during development
   if (import.meta.env.VITE_DFX_NETWORK !== "ic") {
@@ -57,7 +57,8 @@ export function createActor(options?:OptionsType):ReturnType {
     ...options?.actorOptions,
   });
 }
-// create type
+// create importable store for the actor
+// you can import this store in any svelte component to make calls to the backend
 export const ic = writable<ReturnType>({
   actor: createActor() as unknown as ActorSubclass<_SERVICE>,
 });

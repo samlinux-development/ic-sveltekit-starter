@@ -1,13 +1,17 @@
 <script lang="ts">
-	 import { ic } from '../stores/ic';
+	 	import { ic } from '../stores/ic';
+		import '../app.css';
+		import Navi from '../components/navi.svelte';
 
-	let input = '', greeting = '';
+	let input = '', greeting = '', loading = false;
 
 	const handleOnSubmit = async () => {
-
+		loading = true;
+		greeting = 'loading ...';
 		try {
 			// Call the IC
 			greeting = await $ic.actor.sayHelloTo(input);
+			loading = false;
 
 		} catch (err: unknown) {
 			console.error(err);
@@ -16,69 +20,47 @@
 </script>
 
 <main>
-	<img src="logo2.svg" alt="DFINITY logo" />
-	
+	<Navi />
+
+	<img src="icAcademy.png" alt="IcAcademy logo" />
+	<h1>My Demo App</h1>
+
 	<div id="info">
-		This example demonstrates how to interact with a canister using <span class="highlight">import.meta.env.VITE_*</span> variables.
+		<div>
+			This example demonstrates how to interact with a canister using <span class="highlight">import.meta.env.VITE_*</span> variables.
+		</div>
+		<br/>
+		<div>
+			Greet someone with <span class="highlight">an unauthenticated call</span> to the IC.
+		</div>
+
+		<form on:submit|preventDefault={handleOnSubmit}>
+			<input id="name" alt="Name" type="text" bind:value={input} placeholder="Say hello to"/>
+			<button type="submit" disabled={loading} >Click Me!</button>
+		</form>
+
+		<div id="greeting"> {greeting} </div>
 	</div>
-
-	<form on:submit|preventDefault={handleOnSubmit}>
-		<label for="name">Say hello to </label>
-		<input id="name" alt="Name" type="text" bind:value={input}/>
-		<button type="submit">Click Me!</button>
-	</form>
-	<div id="greeting">
-		{greeting}
-	</div>
-
-
 </main>
 
 <style>
-	main {
-		font-family: sans-serif;
+	form input {
+		width: 50%;
+		padding: 0.5rem;
+		margin: 0.5rem 0;
+		border: 1px solid #ccc;
+		border-radius: 5px;
 	}
-	img {
-		max-width: 50vw;
-		max-height: 25vw;
-		display: block;
-		margin: auto;
-	}
-
-	form {
-		display: flex;
-		justify-content: center;
-		gap: 0.5em;
-		flex-flow: row wrap;
-		max-width: 40vw;
-		margin: auto;
-		align-items: baseline;
-		font-size: 1.5rem;
-	}
-
-	button[type='submit'] {
-		padding: 5px 20px;
-		margin: 10px auto;
-		float: right;
-	}
-
 	#greeting {
-		width: 40vw;
-		min-height: 30px;
-		margin: 10px auto;
-		padding: 10px 60px;
+		width: 100%;
+		min-height: 20px;
 		border: 1px solid #222;
+		padding: 0.5rem;
+		margin: 0.5rem 0;
 	}
 	#info {
-		width: 40vw;
-
+		max-width: 100%;
 		margin: 10px auto;
-		padding: 10px 60px;
+		padding: 20px;
 	}
-
-.highlight {
-	background-color: rgb(245, 237, 86);
-	border-radius: 5px;
-	padding: 0 5px;
-}
 </style>

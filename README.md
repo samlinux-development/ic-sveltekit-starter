@@ -59,7 +59,7 @@ Start your local replica (make sure you have DFX already installed!)
 dfx start --clean --background
 ```
 
-Deploy it locally
+## Deploy it locally
 ```bash
 dfx deploy 
 ```
@@ -77,6 +77,11 @@ Open your browser and use the following URL scheme:
 Check the sayHelloTo function with the CLI cammand below:
 ```bash
 dfx canister call backend sayHelloTo '("Roland")'
+```
+
+## Start local development server
+```bash
+npm run dev 
 ```
 
 ## Deploying to the playground
