@@ -1,7 +1,7 @@
 <script lang="ts">
 	 	import { ic } from '../stores/ic';
 		import '../app.css';
-		import Navi from '../components/navi.svelte';
+		import Navi from 'lib/components/navi.svelte';
 
 	let input = '', greeting = '', loading = false;
 

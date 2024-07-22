@@ -14,7 +14,10 @@ const config = {
 			assets: filesPath('static'),
 			params: filesPath('src/params'),
 			routes: filesPath('src/routes'),
-			appTemplate: filesPath('src/app.html'),
+			appTemplate: filesPath('src/app.html')
+		},
+		alias: {
+			'lib': filesPath('./src/lib')
 		}
 	}
 };
